@@ -72,6 +72,55 @@ SteamStore.prototype.addPhoneNumber = function(number, bypassConfirmation, callb
 	});
 };
 
+
+SteamStore.prototype.addPhoneNumber228 = function(number) {
+	return new Promise(async (resolve, reject) => {
+		this.request.post({
+			"uri": "https://store.steampowered.com/phone/add_ajaxop",
+			"form": {
+				"op": "get_phone_number",
+				"input": number,
+				"sessionID": this.getSessionID(),
+				"confirmed": 1,
+				"checkfortos": 1,
+				"bisediting": 0,
+				"token": 0
+			},
+			"json": true
+		}, (err, response, body) => {
+			if (this._checkHttpError(err, response, reject)) {
+				return;
+			}
+
+			resolve(body);
+		});
+	});
+};
+
+SteamStore.prototype.verifyPhoneEmail = function() {
+	return new Promise(async (resolve, reject) => {
+		this.request.post({
+			"uri": "https://store.steampowered.com/phone/add_ajaxop",
+			"form": {
+				"op": "email_verification",
+				"input": "",
+				"sessionID": this.getSessionID(),
+				"confirmed": 1,
+				"checkfortos": 1,
+				"bisediting": 0,
+				"token": 0
+			},
+			"json": true
+		}, (err, response, body) => {
+			if (this._checkHttpError(err, response, reject)) {
+				return;
+			}
+
+			resolve(body);
+		});
+	});
+};
+
 /**
  * Request that Steam resends your phone verification SMS message.
  * @param {function} [callback]
